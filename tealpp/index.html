@@ -1043,8 +1043,14 @@ tpp build my_file.tpp --class
   <pre><code class="language-lua">import gamekit as GameKit
 
 data class Point(x: number, y: number)
+end
 
 local player = Point.new(100, 100)
+
+GameKit.Input.bind("right", "d", "right")
+GameKit.Input.bind("left",  "a", "left")
+GameKit.Input.bind("up",    "w", "up")
+GameKit.Input.bind("down",  "s", "down")
 
 GameKit.app({
     title = "Program mode",
@@ -1053,9 +1059,13 @@ GameKit.app({
 })
 
 function update(dt: number)
-    if GameKit.Input.down("right") then
-        player = Point.new(player.x + 200 * dt, player.y)
-    end
+    local x = player.x
+    local y = player.y
+    if GameKit.Input.down("right") then x = x + 200 * dt end
+    if GameKit.Input.down("left")  then x = x - 200 * dt end
+    if GameKit.Input.down("up")    then y = y - 200 * dt end
+    if GameKit.Input.down("down")  then y = y + 200 * dt end
+    player = Point.new(x, y)
 end
 
 function draw()
